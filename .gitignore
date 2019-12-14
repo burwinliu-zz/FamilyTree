@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# BEGIN USER ADDED ITEMS
+
+# .idea and setup items
+.idea
