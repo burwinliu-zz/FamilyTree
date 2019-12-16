@@ -132,3 +132,7 @@ dmypy.json
 
 # .idea and setup items
 .idea
+
+
+#Sensative data
+server/instance/config.py
