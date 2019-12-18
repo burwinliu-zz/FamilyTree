@@ -1,6 +1,7 @@
 To run, some items are necessary:
-    Note that you will need a mysql database set up
-    have all items in requirements_python.txt installed
+    nodejs installed
+    a mysql database set up
+    all items in requirements_python.txt and all js packages in package.json installed (see requirements files)
     You must define (in the server/app module) a config.py with a few datapoints related to your database setup
         This includes SECRET_KEY and SQLALCHEMY_DATABASE_URI (Search up where to find these)
 After all the

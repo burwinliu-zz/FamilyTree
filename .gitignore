@@ -62,7 +62,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
+src/instance/
 .webassets-cache
 
 # Scrapy stuff:
@@ -134,5 +134,10 @@ dmypy.json
 .idea
 
 
+# packages from npm
+node_modules
+package.json
+
+
 #Sensative data
-server/instance/config.py
+flask-api/instance/config.py

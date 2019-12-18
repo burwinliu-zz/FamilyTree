@@ -1,0 +1,1 @@
+See the folder found within react-frontend, package-lock,json, which when used can install all js dependencies
