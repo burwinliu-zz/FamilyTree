@@ -2,4 +2,6 @@
 Keeping track of the family lines
 
 ## Technology used
-MongoDB
+* Flask RESTful API
+* React front end
+* MySQL Database

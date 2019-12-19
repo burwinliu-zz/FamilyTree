@@ -1,4 +1,4 @@
 flask
 mysql-python
-flask-sqlalchemy
 flask-wtf
+flask-sqlalchemy
