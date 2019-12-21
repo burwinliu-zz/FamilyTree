@@ -1,17 +1,16 @@
 # /server/app/views.py
 
 from flask import jsonify, request
-from flask_sqlalchemy import SQLAlchemy
 
 # User file imports
 from app import create_app
-from instance import config # Need to define the variables in here yourself, inside an instance.config folder
+from instance import config  # Need to define the variables in here yourself, inside an instance.config folder
 from app.errors import user_present, invalid_format, invalid_http_method
-
+from database.main_db import DbHelper
 
 app = create_app('development')
-app.config['SQLALCHEMY_DATABASE_URI'] = config.SQLALCHEMY_DATABASE_URI
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = config.DATABASE_URI
+db_execute = DbHelper(config.SQL_HOST, config.SQL_USER, config.SQL_PASSWORD, config.SQL_DB)
 
 
 @app.route('/LVO', methods=['GET'])
@@ -24,6 +23,7 @@ def base():
 @app.route('/submit_user', methods=['POST'])
 def submit_user():
     data = request.form
+    print(data)
     try:
         if request.method == 'POST':
             # here will be defined checking if db (see above) already has the user in it. If yes, then return error
@@ -40,3 +40,4 @@ def submit_user():
 def update_user():
     if request.method == 'PUT':
         data = request.form
+        print(data)

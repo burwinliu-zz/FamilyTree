@@ -1,0 +1,4 @@
+familytree (Database)
+|-> members (Table (unsorted) : [str name, str parentName, str familyName])
+|-> families(Table (sorted) : [int familyID, str familyName]
+|-> profile(Table (unsorted) : [str nameAttr, str attr, str personName])
