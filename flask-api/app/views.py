@@ -20,8 +20,13 @@ def base():
         return jsonify(x)
 
 
+# TODO @Juliette create more app routes -- one for searching for family ( 2 ways, one which name is known, and one
+#  where name is approximate) , one for searching user (return the profile)
+
+
 @app.route('/submit_user', methods=['POST'])
 def submit_user():
+    # TODO @Juliette Look inside /database/main_db and complete a submit_user form
     data = request.form
     print(data)
     try:
@@ -38,6 +43,7 @@ def submit_user():
 
 @app.route('/update_user_info', methods=['PUT'])
 def update_user():
+    # TODO @Juliette Look inside /database/main_db and complete an update_user form
     if request.method == 'PUT':
         data = request.form
         print(data)

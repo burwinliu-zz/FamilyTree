@@ -41,6 +41,33 @@ class DbHelper:
     def __del__(self):
         self.db_connection.close()
 
+    def input_row(self, table_name: str, info: dict):
+        """
+            Given table name, assuming the info matches the tables, input the row into the table
+        """
+
+    def update_row(self, table_name: str, column_search: str, query: str, info: dict):
+        """
+            Given table name, assuming the info matches the tables, update the row into the table with matching query
+        """
+
+    def get_row_close(self, table_name: str, column_search: str, query: str) -> list:
+        """
+            Given the table name and which column to search, return a list of all rows where the substr
+            is present within the column_search
+        """
+
+    def get_row_many(self, table_name: str, column_search: str, query: str):
+        """
+            Given the table_name and column to search, return all rows with the matching query
+        """
+
+    def get_row(self, table_name: str, column_search: str, query: str):
+        """
+            Given the table_name and column to search, return the row with the given query (Assume all items are
+            unique in this column)
+        """
+
     def _name_in_table(self, name: str) -> bool:
         """
             param:  name [str]
