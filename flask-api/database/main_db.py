@@ -21,21 +21,21 @@ class DbHelper:
         self.cursor = self.db_connection.cursor()
 
         if not self._name_in_table('members'):
-            self.__create_table({
-                'person_name': 'VARCHAR(255)',
+            self.__create_table('members', {
+                'PersonName': 'VARCHAR(255)',
                 'parent_name': 'VARCHAR(255)',
                 'family_name': 'VARCHAR(255)'
             })
         if not self._name_in_table('families'):
-            self.__create_table({
-                'family_id': 'INT',
-                'family_name': 'VARCHAR(255)'
+            self.__create_table('families', {
+                'FamilyID': 'INT',
+                'FamilyName': 'VARCHAR(255)'
             })
         if not self._name_in_table('profile'):
-            self.__create_table({
-                'name_attr': 'VARCHAR(255)',
-                'attr': 'VARCHAR(255)',
-                'person_name': 'VARCHAR(255)'
+            self.__create_table('profile', {
+                'NameAttr': 'VARCHAR(255)',
+                'Attr': 'VARCHAR(255)',
+                'PersonName': 'VARCHAR(255)'
             })
 
     def __del__(self):
@@ -75,9 +75,12 @@ class DbHelper:
 
             Return the condition if passed name is the name of a table within the database connection
         """
-        self.cursor.execute('SELECT `table_name` FROM `information_schema.TABLES`')
+        self.cursor.execute('USE information_schema;')
+        self.cursor.execute('show tables;')
+        self.cursor.execute("SELECT TABLE_NAME FROM columns where TABLE_NAME = %s;", (name,))
+        self.cursor.execute('USE familytree;')
         table_names = self.cursor.fetchall()
-        return tuple([name]) in table_names
+        return len(table_names) != 0
 
     def __create_table(self, table_name: str, param: dict):
         """
