@@ -13,15 +13,21 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.DATABASE_URI
 db_execute = DbHelper(config.SQL_HOST, config.SQL_USER, config.SQL_PASSWORD, config.SQL_DB)
 
 
-@app.route('/LVO', methods=['GET'])
-def base():
+@app.route('/get_family', methods=['GET'])
+def get_family():
+    if request.method == 'GET':
+        if 'name' in request.args:
+            x = {'cookie': 'line'}
+            return jsonify(x)
+        else:
+            return invalid_format("Name")
+
+
+@app.route('/get_user', methods=['GET'])
+def get_user():
     if request.method == 'GET':
         x = {'cookie': 'line'}
         return jsonify(x)
-
-
-# TODO @Juliette create more app routes -- one for searching for family ( 2 ways, one which name is known, and one
-#  where name is approximate) , one for searching user (return the profile)
 
 
 @app.route('/submit_user', methods=['POST'])
@@ -41,7 +47,8 @@ def submit_user():
         return invalid_format('name')
 
 
-@app.route('/update_user_info', methods=['PUT'])
+
+@app.route('/update_user', methods=['PUT'])
 def update_user():
     # TODO @Juliette Look inside /database/main_db and complete an update_user form
     if request.method == 'PUT':

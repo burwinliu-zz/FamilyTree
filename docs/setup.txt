@@ -1,13 +1,22 @@
 To run, some items are necessary:
+    # Prerequisite Software
     nodejs installed
     a mysql database set up
-    all items in requirements_python.txt and all js packages in package.json installed (see requirements files)
+
+    # Install procedures
+    all items in requirements_python.txt and all js packages in package.json installed (see requirements files) via:
+        for CONDA (python) conda install --file requirements_python.txt
+        for PIP (python): "pip install -r requirements_python.txt"
+        for NPM (javascript): "npm install" while cd'd inside react-frontend
+
     You must define (in the server/app module) a config.py with a few variables
         These variables are listed here:
             DATABASE_URI =
 
             FLASK_THREADED =
             FLASK_PORT =
+
+I used a miniconda package manager
 
 For the sake of development, if you are working on the flask end of things (Python) you may just need the requirements_python setup and the mySQL database implemented
                              if you are working on the react end of things (JS) you will need the whole affair set up as the JS depends on the REST api implemented through FLASK
