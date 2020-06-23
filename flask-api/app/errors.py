@@ -1,6 +1,21 @@
 from flask import jsonify
 
 
+def user_not_present(user: str):
+    return jsonify(
+        {
+            'error': {
+                'errors': {
+                    'reason': 'forbidden',
+                    'message': f'User {user} not present; Forbidden request'
+                },
+                'code': 403,
+                'message': 'Forbidden request'
+            }
+        }
+    )
+
+
 def user_present(user: str):
     return jsonify(
         {
@@ -8,6 +23,21 @@ def user_present(user: str):
                 'errors': {
                     'reason': 'forbidden',
                     'message': f'User {user} already present; Forbidden request'
+                },
+                'code': 403,
+                'message': 'Forbidden request'
+            }
+        }
+    )
+
+
+def family_present(family: str):
+    return jsonify(
+        {
+            'error': {
+                'errors': {
+                    'reason': 'forbidden',
+                    'message': f'Family {family} already present; Forbidden request'
                 },
                 'code': 403,
                 'message': 'Forbidden request'

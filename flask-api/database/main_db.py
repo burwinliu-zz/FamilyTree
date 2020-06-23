@@ -19,48 +19,73 @@ class DbHelper:
                                              password=password_in,
                                              db=db_in)
         self.cursor = self.db_connection.cursor()
+        self.db = db_in
 
         if not self._name_in_table('members'):
             self.__create_table('members', {
-                'PersonName': 'VARCHAR(255)',
+                'person_name': 'VARCHAR(255)',
                 'parent_name': 'VARCHAR(255)',
-                'family_name': 'VARCHAR(255)'
+                'family_name': 'VARCHAR(255)',
+                'family_id': 'INT',
             })
         if not self._name_in_table('families'):
             self.__create_table('families', {
-                'FamilyID': 'INT',
-                'FamilyName': 'VARCHAR(255)'
+                'family_id': 'INT',
+                'family_name': 'VARCHAR(255)'
             })
         if not self._name_in_table('profile'):
             self.__create_table('profile', {
-                'NameAttr': 'VARCHAR(255)',
-                'Attr': 'VARCHAR(255)',
-                'PersonName': 'VARCHAR(255)'
+                'name_attr': 'VARCHAR(255)',
+                'attr': 'VARCHAR(255)',
+                'person_name': 'VARCHAR(255)'
             })
-
-    def __del__(self):
-        self.db_connection.close()
 
     def input_row(self, table_name: str, info: dict):
         """
             Given table name, assuming the info matches the tables, input the row into the table
-        """
 
-    def update_row(self, table_name: str, column_search: str, query: str, info: dict):
+            info should be dict: Column: value
         """
-            Given table name, assuming the info matches the tables, update the row into the table with matching query
-        """
+        # may cause issues todo test this
+        # Done to sanitize the inputs
+        try:
+            keys = ",".join([f"{i}" for i in info.keys()])
+            values = ",".join([f"'{i}'" for i in info.values()])
 
-    def get_row_many(self, table_name: str, column_search: str, query: str):
-        """
-            Given the table_name and column to search, return all rows with the matching query
-        """
+            self.cursor.execute(f"USE {self.db};")
+            self.cursor.execute(f"INSERT INTO {table_name}({keys}) VALUES({values});")
+            self.db_connection.commit()
+        except Exception as e:
+            print(self.cursor._last_executed)
+            raise e
 
-    def get_row(self, table_name: str, column_search: str, query: str):
+
+    def update_row(self, table_name: str, column_name: str, criteria: str, info: dict):
+        """
+            Given table name, assuming the info matches the tables, update the row into the table
+
+            info should be dict: Column: value
+        """
+        # may cause issues todo test this
+        to_join = [f"{i} = '{j}'" for i, j in info.items()]
+
+        self.cursor.execute(f"USE {self.db};")
+        self.cursor.execute(f"UPDATE {table_name}")
+        self.cursor.execute(f"SET {','.join(to_join)}")
+        self.cursor.execute(f"WHERE {column_name} = {criteria}")
+        self.db_connection.commit()
+
+    def get_row(self, table_name: str, column_search: str, query: str, fuzzy: bool = False):
         """
             Given the table_name and column to search, return the row with the given query (Assume all items are
             unique in this column)
         """
+        self.cursor.execute(f"USE {self.db};")
+        if fuzzy:
+            self.cursor.execute(f"SELECT * FROM {table_name} WHERE {column_search} LIKE %s", (query,))
+        else:
+            self.cursor.execute(f"SELECT * FROM {table_name} WHERE {column_search} = %s", (query,))
+        return self.cursor.fetchall()
 
     def _name_in_table(self, name: str) -> bool:
         """
@@ -69,10 +94,9 @@ class DbHelper:
 
             Return the condition if passed name is the name of a table within the database connection
         """
-        self.cursor.execute('USE information_schema;')
+        self.cursor.execute("USE information_schema;")
         self.cursor.execute('show tables;')
         self.cursor.execute("SELECT TABLE_NAME FROM columns where TABLE_NAME = %s;", (name,))
-        self.cursor.execute('USE familytree;')
         table_names = self.cursor.fetchall()
         return len(table_names) != 0
 
@@ -106,6 +130,6 @@ class DbHelper:
                 CLOB [(length)] or CHARACTER LARGE OBJECT [(length)] or CHAR LARGE OBJECT [(length)]
                 BLOB [(length)] or BINARY LARGE OBJECT [(length)]
         """
-        # TODO make a cursor execute a TABLE CREATE method with all specifications in docs. PREVENT SQL INJECTION
-        #  ATTACK
-        # self.cursor.execute(f'CREATE TABLE %s (')
+        self.cursor.execute(f"USE {self.db};")
+        to_join = [f"{i} {j}" for i, j in param.items()]
+        self.cursor.execute(f'CREATE TABLE {table_name} ({",".join(to_join)})')

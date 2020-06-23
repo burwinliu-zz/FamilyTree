@@ -141,3 +141,5 @@ package.json
 
 #Sensative data
 flask-api/instance/config.py
+
+meta_records.json
