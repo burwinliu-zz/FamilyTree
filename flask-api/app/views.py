@@ -26,6 +26,8 @@ with open(f'meta_records.json', 'r', newline='', encoding='utf-8') as record_fil
     record = json.load(record_file)
     if 'family_id_count' not in record:
         record['family_id_count'] = 0
+    if 'people_id_count' not in record:
+        record['people_id_count'] = 0
 
 valid_tables = {'members', 'families', 'profile'}
 
@@ -44,11 +46,25 @@ def success_register(registered: str):
     )
 
 
+def success_update(update):
+    return jsonify(
+        {
+            'data': {
+                'success': 'True',
+                'message': {
+                    'message': f'{update} was updated'
+                },
+                'code': 200,
+            }
+        }
+    )
+
+
 @app.route('/search_family', methods=['GET'])
 def search_family():
     if request.method == 'GET':
         if 'name' in request.args:
-            result = db_execute.get_row('families', "family_name", request.args['name'], fuzzy=True)
+            result = db_execute.get_row('families', "family_name", f"%{request.args['name']}%", fuzzy=True)
             return jsonify(result)
         else:
             return invalid_format("Name")
@@ -72,7 +88,7 @@ def get_family():
 def search_user():
     if request.method == 'GET':
         if 'name' in request.args:
-            potential_members = db_execute.get_row('members', "person_name", request.args['name'], fuzzy=True)
+            potential_members = db_execute.get_row('people', "person_name", f"%{request.args['name']}%", fuzzy=True)
             return jsonify(potential_members)
 
 
@@ -112,14 +128,15 @@ def submit_user():
             # here will be defined checking if db (see above) already has the user in it. If yes, then return error
             # user_present, if not proceed to input user. Need to figure out how to transfer large amounts of data if
             # possible to server thru JSON?
-            # TODO make it so can have multiple profiles -- maybe increase SQL structure to have a dedicated UNIQUE
-            #  member holder and figure out how to pass along attributes towards the database -- JSON file uploads?
-            if len(db_execute.get_row('members', 'person_name', request.args['name'], fuzzy=False)) != 0:
+            if len(db_execute.get_row('people', 'person_name', request.args['name'], fuzzy=False)) != 0:
                 return user_present(f"{request.args['name']}")
-            db_execute.input_row('members',
-                                 {"family_name": request.args['family'],
-                                  "person_name": request.args['name'],
-                                  "parent_name": request.args['parent']})
+            new_person_id = record['people_id_count']
+            with open(f'meta_records.json', 'w', newline='', encoding='utf-8') as record_hold:
+                record['people_id_count'] += 1
+                json.dump(record, record_hold)
+            db_execute.input_row('people',
+                                 {"person_name": request.args['name'],
+                                  "person_id": new_person_id})
             return success_register(request.args['name'])
         else:
             return invalid_http_method(request.method, 'POST')
@@ -127,14 +144,27 @@ def submit_user():
         return invalid_format('name')
 
 
+@app.route('/submit_user_family_info', methods=['POST'])
+def submit_user_family_info():
+    person_info = db_execute.get_row('people', 'person_name', request.args['name'], fuzzy=False)
+    if len(person_info) == 0:
+        return user_not_present(f"{request.args['name']}")
+    db_execute.input_row('family_info',
+                         {"family_name": request.args['family'],
+                          "person_id": person_info[0][1],
+                          "parent_name": request.args['parent']})
+    return success_register(request.args['name'])
+
+
 @app.route('/submit_attr', methods=['POST'])
 def submit_attribute():
-    if len(db_execute.get_row('members', 'person_name', request.args['name'], fuzzy=False)) == 0:
+    person_info = db_execute.get_row('people', 'person_name', request.args['name'], fuzzy=False)
+    if len(person_info) == 0:
         return user_not_present(f"{request.args['name']}")
-    db_execute.input_row('members',
-                         {"family_name": request.args['family'],
-                          "person_name": request.args['name'],
-                          "parent_name": request.args['parent']})
+    db_execute.input_row('profile',
+                         {"person_id": person_info[0][1],
+                          "name_attr": request.args['name_attr'],
+                          "attr": request.args['attr']})
     return success_register(request.args['name'])
 
 
@@ -143,17 +173,23 @@ def update_user():
     if request.method == 'PUT':
         if 'type' in request.args and 'name' in request.args:
             to_input = {}
+            person_info = db_execute.get_row('people', 'person_name', request.args['name'], fuzzy=False)
+
+            if len(person_info) == 0:
+                return user_not_present(f"{request.args['name']}")
             if request.args['type'] == 'profile':
-                # Not working well yet
-                if 'attr' in request.args:
-                    to_input['attr'] = request.args['attr']
-                if 'name_attr' in request.args:
-                    to_input['name_attr'] = request.args['name_attr']
-            elif request.args['type'] == 'members':
+                to_input['name_attr'] = request.args['name_attr']
+                db_execute.update_row_multi_criteria('profile',
+                                                     ['person_id', 'attr'],
+                                                     [person_info[0][1], request.args['attr']],
+                                                     to_input)
+                return success_update(to_input)
+            elif request.args['type'] == 'family_info':
                 if 'parent_name' in request.args:
                     to_input['parent_name'] = request.args['parent_name']
                 if 'family_name' in request.args:
                     to_input['family_name'] = request.args['family_name']
-            db_execute.update_row('profile', "person_name", request.args['name'], to_input)
+                db_execute.update_row('family_info', "person_name", person_info[0][1], to_input)
+                return success_update(to_input)
         return invalid_format('type')
     return invalid_http_method(request.method, 'PUT')

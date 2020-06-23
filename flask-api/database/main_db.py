@@ -21,23 +21,27 @@ class DbHelper:
         self.cursor = self.db_connection.cursor()
         self.db = db_in
 
-        if not self._name_in_table('members'):
-            self.__create_table('members', {
-                'person_name': 'VARCHAR(255)',
+        if not self._name_in_table('family_info'):
+            self.__create_table('family_info', {
+                'person_id': 'INT',
                 'parent_name': 'VARCHAR(255)',
-                'family_name': 'VARCHAR(255)',
                 'family_id': 'INT',
-            })
-        if not self._name_in_table('families'):
-            self.__create_table('families', {
-                'family_id': 'INT',
-                'family_name': 'VARCHAR(255)'
             })
         if not self._name_in_table('profile'):
             self.__create_table('profile', {
                 'name_attr': 'VARCHAR(255)',
                 'attr': 'VARCHAR(255)',
-                'person_name': 'VARCHAR(255)'
+                'person_id': 'INT'
+            })
+        if not self._name_in_table('people'):
+            self.__create_table('people', {
+                'person_name': 'VARCHAR(255)',
+                'person_id': 'INT'
+            })
+        if not self._name_in_table('families'):
+            self.__create_table('families', {
+                'family_name': 'VARCHAR(255)',
+                'family_id': 'INT',
             })
 
     def input_row(self, table_name: str, info: dict):
@@ -73,6 +77,20 @@ class DbHelper:
         self.cursor.execute(f"UPDATE {table_name}")
         self.cursor.execute(f"SET {','.join(to_join)}")
         self.cursor.execute(f"WHERE {column_name} = {criteria}")
+        self.db_connection.commit()
+
+    def update_row_multi_criteria(self, table_name: str, column_name: list, criteria: list, info: dict):
+        """
+            Given table name, assuming the info matches the tables, update the row into the table
+
+            info should be dict: Column: value
+        """
+        to_join = [f"{i} = '{j}'" for i, j in info.items()]
+        to_join_criteria = [f"{i} = '{j}'" for i, j in zip(column_name, criteria)]
+        self.cursor.execute(f"USE {self.db};")
+        self.cursor.execute(f"UPDATE {table_name} "
+                            f"SET {','.join(to_join)} "
+                            f"WHERE {' AND '.join(to_join_criteria)};")
         self.db_connection.commit()
 
     def get_row(self, table_name: str, column_search: str, query: str, fuzzy: bool = False):
