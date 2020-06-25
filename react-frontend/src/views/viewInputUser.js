@@ -1,13 +1,13 @@
 import React from "react";
 import TextField from '@material-ui/core/TextField';
+import 'styles/view.css'
 
 function ViewInputUser()  {
     return (
         <div className="view">
-            <p> testing input user </p>
+            <TextField id="text" type="text" />
         </div>
     );
-    return <TextField id="time" type="time" inputProps={inputProps} />;
 }
 
 export default ViewInputUser;

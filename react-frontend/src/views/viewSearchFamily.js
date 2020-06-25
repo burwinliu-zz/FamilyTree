@@ -1,4 +1,5 @@
 import React from "react";
+import 'styles/view.css'
 
 function ViewSearchFamily()  {
     return (

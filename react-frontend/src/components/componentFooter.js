@@ -6,7 +6,7 @@ function Footer()  {
     return (
         <div className="footer">
             <div className={'center-div'}>
-                <Link href={"https://github.com/burwinliu/FamilyTree"} rel={"noopener"}>Powered by React</Link>
+                <Link href={"https://github.com/burwinliu/FamilyTree"} rel={"noopener"}>Source Code</Link>
             </div>
         </div>
     );
