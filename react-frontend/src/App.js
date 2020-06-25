@@ -1,16 +1,18 @@
-import React, {useEffect} from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import 'styles/App.css';
+import NavBar from 'components/componentNavbar'
+import Footer from "components/componentFooter";
 
 function App()  {
-  useEffect(() =>{
-    fetch("/LVO").then(response =>
-        response.json().then(data=> {
-          console.log(data);
-        })
+    return (
+        <div className="App">
+            <NavBar/>
+            <div className='body'>
+
+            </div>
+            <Footer/>
+        </div>
     );
-  }, []);
-  return <div className="App"/>
 }
 
 export default App;

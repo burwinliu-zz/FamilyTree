@@ -60,6 +60,12 @@ def success_update(update):
     )
 
 
+@app.route('/test', methods=['GET'])
+def test():
+    if request.method == 'GET':
+        return success_register("connection")
+
+
 @app.route('/search_family', methods=['GET'])
 def search_family():
     if request.method == 'GET':
@@ -130,10 +136,14 @@ def submit_user():
             # possible to server thru JSON?
             if len(db_execute.get_row('people', 'person_name', request.args['name'], fuzzy=False)) != 0:
                 return user_present(f"{request.args['name']}")
+
+            # write the new ID into meta_records, and increment
             new_person_id = record['people_id_count']
             with open(f'meta_records.json', 'w', newline='', encoding='utf-8') as record_hold:
                 record['people_id_count'] += 1
                 json.dump(record, record_hold)
+
+            # Submit the new person to the db
             db_execute.input_row('people',
                                  {"person_name": request.args['name'],
                                   "person_id": new_person_id})
@@ -146,6 +156,10 @@ def submit_user():
 
 @app.route('/submit_user_family_info', methods=['POST'])
 def submit_user_family_info():
+    """
+    ASSUMES THAT PASSED INPUT IS UNIQUE -- may need more criteria to clarify
+    :return: json representation of success or failure
+    """
     person_info = db_execute.get_row('people', 'person_name', request.args['name'], fuzzy=False)
     if len(person_info) == 0:
         return user_not_present(f"{request.args['name']}")

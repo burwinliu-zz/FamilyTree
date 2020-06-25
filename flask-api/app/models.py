@@ -9,6 +9,10 @@ class Family:
         """
             Return tree of all family members
         """
+        pass
+
+    def jsonify(self):
+        pass
 
 
 class Person:
@@ -21,3 +25,7 @@ class Person:
 
             TODO Juliette try and complete
         """
+        pass
+
+    def jsonify(self):
+        pass
