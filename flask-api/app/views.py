@@ -149,6 +149,7 @@ def submit_user():
                                   "person_id": new_person_id})
             return success_register(request.args['name'])
         else:
+
             return invalid_http_method(request.method, 'POST')
     except KeyError:
         return invalid_format('name')
