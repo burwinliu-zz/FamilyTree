@@ -2,14 +2,30 @@ import React from 'react';
 import 'styles/App.css';
 import NavBar from 'components/componentNavbar'
 import Footer from "components/componentFooter";
+import {Router, Route} from "react-router";
+import ViewHome from "./view/viewHome";
+import ViewUser from "./view/viewUser";
+import ViewFamily from "./view/viewFamily";
+import ViewSearchFamily from "./view/viewSearchFamily";
+import ViewSearchUser from "./view/viewSearchUser";
+import ViewInputUser from "./view/viewInputUser";
+import ViewInputFamily from "./view/viewInputFamily";
 
 function App()  {
     return (
         <div className="App">
             <NavBar/>
-            <div className='body'>
-
-            </div>
+            <Router>
+                <div className='body'>
+                    <Route path={"/"} exact component={ViewHome}/>
+                    <Route path={"/user"} exact component={ViewUser}/>
+                    <Route path={"/family"} exact component={ViewFamily}/>
+                    <Route path={"/search-user"} exact component={ViewSearchUser}/>
+                    <Route path={"/search-family"} exact component={ViewSearchFamily}/>
+                    <Route path={"/input-user"} exact component={ViewInputUser}/>
+                    <Route path={"/input-family"} exact component={ViewInputFamily}/>
+                </div>
+            </Router>
             <Footer/>
         </div>
     );
