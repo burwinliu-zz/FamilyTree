@@ -7,7 +7,7 @@ function ViewInputUser()  {
             <p> testing input user </p>
         </div>
     );
-    return <TextField id="time" type="time" inputProps={inputProps} />;
+    
 }
 
 export default ViewInputUser;
