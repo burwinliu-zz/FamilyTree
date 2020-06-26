@@ -1,3 +1,26 @@
-.right-buttons-group{
+.navbar-right-buttons-group{
     margin-left: auto;
+}
+
+
+.navbar-search-wrapper{
+    display: inline-block;
+    position:relative;
+    margin-right: 1rem;
+    padding: 5px 5px 5px 5px;
+    background-color: lightgray;
+}
+
+.navbar-search-icon-wrapper{
+    height: 100%;
+    top: 0;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    pointer-events: none;
+    justify-content: center;
+}
+
+.navbar-search-field{
+    padding-left: 2rem;
 }
