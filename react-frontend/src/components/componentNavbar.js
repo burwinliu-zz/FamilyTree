@@ -30,9 +30,13 @@ function Navbar()  {
     }
     const clickSearch = () => {
         if(isFamily){
+            // gray out screen, zoom animation post load while waiting for the following function
             SearchFamily(searchValue);
+            // pass on information as PROP to viewSearchFamily
+            
         }
         else{
+            //everything above but in SearchUser
             SearchUser(searchValue);
         }
     };
