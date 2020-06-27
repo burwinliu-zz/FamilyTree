@@ -1,7 +1,10 @@
+.navbar-component-wrapper{
+    display:inline-block;
+}
+
 .navbar-right-buttons-group{
     margin-left: auto;
 }
-
 
 .navbar-search-wrapper{
     display: inline-block;
@@ -11,16 +14,14 @@
     background-color: lightgray;
 }
 
-.navbar-search-icon-wrapper{
-    height: 100%;
-    top: 0;
-    display: flex;
-    position: absolute;
-    align-items: center;
-    pointer-events: none;
-    justify-content: center;
+div.navbar-search-wrapper>button.navbar-search-button{
+    min-width: 30px;
 }
 
 .navbar-search-field{
-    padding-left: 2rem;
+    padding-left: .2rem;
+}
+
+.toggle-label{
+    padding-right: .5rem;
 }
