@@ -88,6 +88,8 @@ def get_family():
             return jsonify({})
         else:
             return invalid_format("Name")
+    else:
+        return invalid_http_method(request.method, "GET")
 
 
 @app.route('/search_user', methods=['GET'])
@@ -96,6 +98,10 @@ def search_user():
         if 'name' in request.args:
             potential_members = db_execute.get_row('people', "person_name", f"%{request.args['name']}%", fuzzy=True)
             return jsonify(potential_members)
+        else:
+            return invalid_format("Name")
+    else:
+        return invalid_http_method(request.method, "GET")
 
 
 @app.route('/get_user', methods=['GET'])
