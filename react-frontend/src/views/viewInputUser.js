@@ -10,6 +10,7 @@ function ViewInputUser()  {
     const [inputValue, setInputValue] = React.useState("Name");
 
     const clickInput=()=>{
+        console.log(inputValue)
         InputUser(inputValue);
     }
     const onChangeInput = (event) =>{

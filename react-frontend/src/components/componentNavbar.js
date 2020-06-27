@@ -77,6 +77,19 @@ function Navbar()  {
                     <Button component={ Link } to="/input-user" className={'navbar-component-wrapper'}>
                         Input User
                     </Button>
+                    <Button
+                        component={ Link }
+                        to={{
+                            pathname: "/user",
+                            query: {
+                                id_num:"0",
+                                person_name:"milk"
+                            }
+                        }}
+                        className={'navbar-component-wrapper'}
+                    >
+                        Testing Get User
+                    </Button>
                 </div>
             </Toolbar>
         </div>
