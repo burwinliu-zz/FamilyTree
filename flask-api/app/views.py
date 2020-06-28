@@ -107,9 +107,12 @@ def search_user():
 @app.route('/get_user', methods=['GET'])
 def get_user():
     if request.method == 'GET':
-        if 'name' in request.args:
-            profile = db_execute.get_row('profile', "person_name", request.args['name'], fuzzy=False)
+        if 'id' in request.args:
+            profile = db_execute.get_row('profile', "person_id", request.args['id'], fuzzy=False)
             return jsonify(profile)
+        else:
+            return invalid_format("id")
+    return invalid_http_method(request.method, "GET")
 
 
 @app.route('/submit_family', methods=['POST'])
