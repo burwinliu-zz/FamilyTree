@@ -23,13 +23,41 @@ function App()  {
                 <NavBar/>
                     <Container>
                         <Switch>
-                            <Route path={"/"} exact component={ViewHome}/>
-                            <Route path={"/user"} exact component={ViewUser}/>
-                            <Route path={"/family"} exact component={ViewFamily}/>
-                            <Route path={"/search-user"} exact component={ViewSearchUser}/>
-                            <Route path={"/search-family"} exact component={ViewSearchFamily}/>
-                            <Route path={"/input-user"} exact component={ViewInputUser}/>
-                            <Route path={"/input-family"} exact component={ViewInputFamily}/>
+                            <Route
+                                path={"/"}
+                                exact
+                                render={(props) => <ViewHome {...props}/>}
+                            />
+                            <Route
+                                path={"/user"}
+                                exact
+                                render={(props) => <ViewUser {...props}/>}
+                            />
+                            <Route
+                                path={"/family"}
+                                exact
+                                render={(props) => <ViewFamily {...props}/>}
+                            />
+                            <Route
+                                path={"/search-user"}
+                                exact
+                                render={(props) => <ViewSearchUser {...props}/>}
+                            />
+                            <Route
+                                path={"/search-family"}
+                                exact
+                                render={(props) => <ViewSearchFamily {...props}/>}
+                            />
+                            <Route
+                                path={"/input-user"}
+                                exact
+                                render={(props) => <ViewInputUser {...props}/>}
+                            />
+                            <Route
+                                path={"/input-family"}
+                                exact
+                                render={(props) => <ViewInputFamily {...props}/>}
+                            />
                         </Switch>
                     </Container>
                 <Footer/>

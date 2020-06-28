@@ -41,9 +41,13 @@ function Navbar()  {
     }
     const clickSearch = () => {
         if(isFamily){
+            // gray out screen, zoom animation post load while waiting for the following function
             SearchFamily(searchValue);
+            // pass on information as PROP to viewSearchFamily
+            
         }
         else{
+            //everything above but in SearchUser
             SearchUser(searchValue);
         }
     };
@@ -84,6 +88,19 @@ function Navbar()  {
                     </Button>
                     <Button component={ Link } to="/input-user" className={'navbar-component-wrapper'}>
                         Input User
+                    </Button>
+                    <Button
+                        component={ Link }
+                        to={{
+                            pathname: "/user",
+                            query: {
+                                id_num:"0",
+                                person_name:"milk"
+                            }
+                        }}
+                        className={'navbar-component-wrapper'}
+                    >
+                        Testing Get User
                     </Button>
                 </div>
             </Toolbar>

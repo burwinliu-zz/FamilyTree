@@ -10,9 +10,9 @@ export async function GetJSON(loc, params){
             return data.json();
         })
         .then(res=>{
-            console.log("2nd PROMISE", res)
+            console.log("2nd PROMISE", res);
+            return res;
         })
-
 }
 
 export function PutJSON(loc, params){
