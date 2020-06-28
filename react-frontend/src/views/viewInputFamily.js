@@ -2,15 +2,17 @@ import React from "react";
 import 'styles/view.css'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {InputFamily} from "services/serviceInput"
 
 function ViewInputFamily()  {
     const [inputValue, setInputValue] = React.useState("family");
 
     const clickenter=()=>{
+        console.log(inputValue)
         InputFamily(inputValue);
     }
     const onChangeInput = (event) =>{
-        setUnputValue(event.target.value);
+        setInputValue(event.target.value);
     }
 
     return (

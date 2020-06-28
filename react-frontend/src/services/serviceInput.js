@@ -13,6 +13,6 @@ export function InputFamily(input){
     let params = {
         name: input,
     };
-
+    console.log(loc, params)
     PutJSON(loc, params)
 }
