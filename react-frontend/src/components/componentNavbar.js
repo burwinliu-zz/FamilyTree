@@ -28,6 +28,17 @@ function Navbar()  {
     const onChangeSearchInput = (event) => {
         setSearchValue(event.target.value);
     }
+
+    function enterButton(event){
+        console.log("PRESSED");
+        console.log(event.key);
+        console.log(event.keyCode);
+        if(event.keyCode === 13 && searchValue !== ""){
+            console.log("hello");
+            console.log(searchValue)
+          //  clickSearch();
+        }
+    }
     const clickSearch = () => {
         if(isFamily){
             // gray out screen, zoom animation post load while waiting for the following function
@@ -57,6 +68,7 @@ function Navbar()  {
                             placeholder={searchValue}
                             inputProps={{ 'aria-label': 'search' }}
                             onChange={onChangeSearchInput}
+                            onKeyDown={enterButton}
                         />
                     </div>
                     <Typography component="div" className={'navbar-component-wrapper'}>

@@ -34,6 +34,7 @@ export function PutJSON(loc, params){
             method: 'POST'
         })
         .then(data=>{
+            console.log(data.json)
             return data.json();
         })
         .then(res=>{
