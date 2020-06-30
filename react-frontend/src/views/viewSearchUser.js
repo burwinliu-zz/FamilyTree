@@ -4,7 +4,7 @@ import 'styles/view.css'
 function ViewSearchUser()  {
     //render prop information here
     return (
-        <div className="view">
+        <div className="view-body">
             <p> testing search user </p>
         </div>
     );

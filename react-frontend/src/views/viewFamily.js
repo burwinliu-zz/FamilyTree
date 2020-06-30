@@ -3,7 +3,7 @@ import 'styles/view.css'
 
 function ViewFamily()  {
     return (
-        <div className="view">
+        <div className="view-body">
             <p> testing family </p>
         </div>
     );

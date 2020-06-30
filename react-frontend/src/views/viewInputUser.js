@@ -18,7 +18,7 @@ function ViewInputUser()  {
     }
 
     return (
-        <div className="view">
+        <div className="view-body">
             <TextField
                 id="text"
                 type="text"

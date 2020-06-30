@@ -1,0 +1,11 @@
+ALL JSON should follow the following protocol:
+
+    'data': {
+        'success': __(indicate if success)__,
+        'message': __(message to be displayed)__,
+        'code': __(response code number)__,
+        ['errors': 'reason': __(reason for error)__,
+                    'message': __(error message)__,
+        ]
+        ['data': data]
+    }

@@ -4,7 +4,7 @@ import 'styles/view.css'
 function ViewSearchFamily()  {
     //and here
     return (
-        <div className="view">
+        <div className="view-body">
             <p> testing search family </p>
         </div>
     );

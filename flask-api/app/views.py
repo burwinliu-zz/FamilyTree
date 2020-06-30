@@ -37,9 +37,7 @@ def success_register(registered: str):
         {
             'data': {
                 'success': 'True',
-                'message': {
-                    'message': f'{registered} was registered'
-                },
+                'message': f'{registered} was registered',
                 'code': 200,
             }
         }
@@ -51,10 +49,21 @@ def success_update(update):
         {
             'data': {
                 'success': 'True',
-                'message': {
-                    'message': f'{update} was updated'
-                },
+                'message': f'{update} was updated',
                 'code': 200,
+            }
+        }
+    )
+
+
+def success_data_response(data, message):
+    return jsonify(
+        {
+            'data': {
+                'success': 'True',
+                'message': f'{message}',
+                'code': 200,
+                'data': data,
             }
         }
     )
@@ -71,7 +80,7 @@ def search_family():
     if request.method == 'GET':
         if 'name' in request.args:
             result = db_execute.get_row('families', "family_name", f"%{request.args['name']}%", fuzzy=True)
-            return jsonify(result)
+            return success_data_response(result, f"Search for {request.args['name']} success")
         else:
             return invalid_format("Name")
 
@@ -84,7 +93,7 @@ def get_family():
             print(family_info, type(family_info))
             if len(family_info) == 1:
                 members = db_execute.get_row('members', 'family_id', family_info[0][0], fuzzy=False)
-                return jsonify(members)
+                return success_data_response(members, f"Retrieval for {request.args['name']} success")
             return jsonify({})
         else:
             return invalid_format("Name")
@@ -97,7 +106,7 @@ def search_user():
     if request.method == 'GET':
         if 'name' in request.args:
             potential_members = db_execute.get_row('people', "person_name", f"%{request.args['name']}%", fuzzy=True)
-            return jsonify(potential_members)
+            return success_data_response(potential_members, f"Search for {request.args['name']} success")
         else:
             return invalid_format("Name")
     else:
@@ -107,9 +116,9 @@ def search_user():
 @app.route('/get_user', methods=['GET'])
 def get_user():
     if request.method == 'GET':
-        if 'id' in request.args:
+        if 'id' in request.args and 'name' in request.args:
             profile = db_execute.get_row('profile', "person_id", request.args['id'], fuzzy=False)
-            return jsonify(profile)
+            return success_data_response(profile, f"Retrieval for {request.args['name']} success")
         else:
             return invalid_format("id")
     return invalid_http_method(request.method, "GET")

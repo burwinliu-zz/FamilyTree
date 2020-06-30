@@ -3,7 +3,7 @@ import 'styles/view.css'
 
 function ViewHome()  {
     return (
-        <div className="view">
+        <div className="view-body">
             <p> testing Home </p>
         </div>
     );
